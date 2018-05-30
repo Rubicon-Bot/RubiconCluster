@@ -1,10 +1,14 @@
 package fun.rubicon.cluster.bot.command;
 
+import fun.rubicon.cluster.Server;
 import fun.rubicon.cluster.bot.commands.BotStartCommand;
 import fun.rubicon.cluster.bot.commands.BotStopCommand;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.json.JSONArray;
+
+import java.util.List;
 
 public class BotCommandHandler extends ListenerAdapter {
 
@@ -12,7 +16,8 @@ public class BotCommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if(event.getAuthor().getIdLong() != 227817074976751616L)
+        JSONArray whitelistedUsers = Server.getInstance().getConfig().getArray("whitelisted_users");
+        if(!whitelistedUsers.toList().contains(event.getAuthor().getId()))
             return;
         if(!event.getChannel().getType().isGuild() || event.isWebhookMessage() || event.getAuthor().isBot() || event.getAuthor().isFake())
             return;
