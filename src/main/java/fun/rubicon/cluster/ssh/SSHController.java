@@ -15,6 +15,7 @@ public class SSHController {
 
     public SSHController(String host, String user, String password) throws JSchException {
         JSch jSch = new JSch();
+        JSch.setConfig("StrictHostKeyChecking", "no");
         session = jSch.getSession(user, host, 22);
         session.setPassword(password);
 
