@@ -3,7 +3,6 @@ package fun.rubicon.cluster.ssh;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.common.IOUtils;
 import net.schmizz.sshj.connection.channel.direct.Session;
-
 import java.io.IOException;
 
 public class SSHController {
@@ -13,7 +12,11 @@ public class SSHController {
 
     public SSHController(String host, String user, String password) throws IOException {
         sshClient = new SSHClient();
-        sshClient.loadKnownHosts();
+        sshClient.addHostKeyVerifier(
+                (arg0, arg1, arg2) -> {
+                    return true;  // don't bother verifying
+                }
+        );
 
         sshClient.connect(host);
         sshClient.authPassword(user, password);
