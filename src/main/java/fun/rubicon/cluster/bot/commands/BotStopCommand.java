@@ -1,5 +1,6 @@
 package fun.rubicon.cluster.bot.commands;
 
+import com.jcraft.jsch.JSchException;
 import fun.rubicon.cluster.Server;
 import fun.rubicon.cluster.bot.command.BotCommand;
 import fun.rubicon.cluster.ssh.SSHBotCredentials;
@@ -56,12 +57,15 @@ public class BotStopCommand extends BotCommand {
         if(all) {
             for(Object obj : array) {
                 SSHBotCredentials credentials = SSHBotCredentials.parse((String) obj);
+                SSHController sshController = null;
                 try {
-                    SSHController sshController = new SSHController(credentials.getHost(), credentials.getUser(), credentials.getPassword());
+                    sshController = new SSHController(credentials.getHost(), credentials.getUser(), credentials.getPassword());
                     sshController.send(String.format(Server.getInstance().getConfig().getString("cmd_bot_stop"), credentials.getPath()));
                     messageReceivedEvent.getTextChannel().sendMessage(new EmbedBuilder().setTitle(":green_heart: Stopping Procedure").setDescription(String.format("Stopping Container on `%s`...", credentials.getHost())).setColor(Color.yellow).build()).queue();
-                } catch (IOException e) {
+                } catch (JSchException e) {
                     e.printStackTrace();
+                } finally {
+                    if(sshController != null) sshController.close();
                 }
             }
         }

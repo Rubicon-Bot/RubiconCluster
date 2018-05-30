@@ -3,12 +3,14 @@ package fun.rubicon.cluster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class ServerLauncher {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerLauncher.class.getSimpleName());
 
     public static void main(String[] args) {
         printHeader();
+
         new Server();
     }
 
