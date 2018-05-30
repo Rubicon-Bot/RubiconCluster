@@ -1,0 +1,5 @@
+.idea/
+target/
+server-config.json
+
+*.iml
