@@ -51,5 +51,6 @@ public class Server {
         config.setDefault("cmd_bot_start", "cd %s && sudo docker-compose up -d");
         config.setDefault("cmd_bot_stop", "cd %s && sudo docker-compose stop");
         config.setDefault("bot_credentials", new ArrayList<>());
+        config.setDefault("whitelisted_users", new ArrayList<>());
     }
 }
